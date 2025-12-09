@@ -56,9 +56,9 @@ ArenaEngine/
 package main
 
 import (
-    "github.com/ArenaEngine/ArenaEngine/ArenaServer"
+    "github.com/ArenaMatrix/ArenaEngine/ArenaServer"
     // 引入 KCP 网关支持
-    _ "github.com/ArenaEngine/ArenaEngine/ArenaServer/gate/kcp"
+    _ "github.com/ArenaMatrix/ArenaEngine/ArenaServer/gate/kcp"
 )
 
 func main() {

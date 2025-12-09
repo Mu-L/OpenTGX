@@ -1,79 +1,118 @@
-*English | [中文](./README-CN.md)
+# ArenaMatrix
 
-## About `OpenTGX`
+## 📖 简介 (Introduction)
 
-![open-tgx-logo-txt.png](./open-tgx-logo-txt.png)
+**ArenaMatrix (AM)** 是一款专为 **房间式多人在线游戏和实时互动应用** 设计的开源商业级全栈引擎。
 
-`OpenTGX` is an open-source game development solution.
+通过  AM，开发者可以轻松开发出如 MOBA、IO、FPS、RTS、在线抢答、单词PK 等在线游戏和应用。
 
-The biggest difference compared to the other frameworks is that `OpenGTX` is not only a framework, it is based on a unified basic framework and has plenty of examples and cases to meet the project's requirements and solve problems.
+在当前的多人在线游戏和实时互动应用开发中，跨端同步依然是巨大的技术门槛。开发者们深受网络抖动、状态不一致和物理不同步的折磨。
 
-- `Open` = Open Source
-- `TGX` = Take Gamedev Tech to More Fields!
+**ArenaMatrix 旨在解决这些痛点，让研发团队可以快速开发出多端同步的游戏和应用。**
 
-`OpenTGX` is based on [Cocos Creator](https://www.cocos.com/creator) (one of the top game engines in the world) and can work with [NodeJS](https://nodejs.org/en)( the most popular JS server-side programming platform) and Golang.
+ArenaMatrix 包含了：
+- **服务端核心：** 基于 Actor 模型的服务端框架，支持状态同步、帧同步、集群部署。
+- **全平台客户端**：支持 Unity、Cocos、HarmonyOS 等客户端，可快速集成。
+- **示例、教程与文档**：丰富的示例、教程与文档，方便开发者快速入门
+- **CLI&MTools**：命令行工具与相关工具
+- **MCP**：MCP 服务，可方便对接各类编程智能体。
 
-It targets to be a solution that can solve the daily development requirements and issues.
+> **我们的愿景：** 将游戏同步技术基础设施化、AI 化，让开发即时竞技游戏和多人互动应用像开发单机一样简单。
 
-## Documentation
+## 🌟 核心特性 (Features)
 
-- [Quick Start](./docs/quick-start.md)
-- [Developer Guide](./docs/developer-guide.md)
-- [UI Framework](./docs/tgx-core-ui-management.md)
-- [Virtual Joystick](./docs/EasyController/EasyController.md)
-- [Audio Manager](./docs/tgx-core-audio-mgr.md)
-- [Auto Resolution Policy](./docs/tgx-core-auto-resolution-policy.md)
-- [Camera Components](./docs/tgx-core-camera-components.md)
-- [Module Management](./docs/tgx-core-module-class.md)
-- [tgx-core-cocos](./docs/tgx-core-cocos.md)
+- **⚡ 高性能 Actor 模型:** 服务端基于极度优化的 Actor 并发模型构建，房间逻辑无需互斥锁，单节点轻松支撑万级并发。
+- **⚡ 低内存开销:** 采用并发优势最强的 Golang 语言开发，将内存开销降到极致。
+- **🧠 确定性核心 (Deterministic Core):** 保证核心战斗逻辑在 Go (服务端)、C# (Unity)、TypeScript (Cocos) 和 ArkTS (鸿蒙) 上运行结果完全一致（浮点数对齐）。
 
-## Features
+- **🚀 工业级竞技网络:** 内置 KCP (可靠 UDP) 协议，专为弱网环境下的竞技游戏优化，拒绝卡顿与拉扯。
+- **⏪ 预测与回滚:** 开箱即用的状态快照与回滚逻辑。玩家操作零延迟响应，系统自动处理网络和解。
+- **🤖 AI-Ready:** 原生支持服务端 AI Agent 接入，轻松实现 AI-Driven 内容。
+- **📦 数据驱动 ECS:** 专为海量实体（单房间 10,000+ 单位）优化的内存布局，性能极致。
 
-- **First Loading Time**、**Bundle Management**
-- **Module Management**、**UI Management**
-- **Network**、**Communication with Platform**
-- **Joystick**、**2D&3D Utils and Tools**
-- **Performance**、**Heating**、**Rendering**
+## 🏗️ 仓库结构 (Structure)
 
-## Contact Me
+本项目采用单体仓库 (Monorepo) 管理，确保服务端与各端 SDK 版本完美对齐。
 
-Welcome to following my LinkedIn:
+```text
+ArenaMatrix/
+├── ArenaServer/       # (Golang)核心服务端
+├── ArenaUnity/        # (C#)Unity 客户端 SDK与相关示例
+├── ArenaCocos/        # (TypeScript)Cocos Creator 客户端 SDK 与相关示例
+├── ArenaHarmony/      # (ArkTS)鸿蒙 Next 原生 SDK 与相关示例
+├── ArenaProtocols/    # (Protobuf) 前后端共享协议定义
+└── Tools/             # 相关工具
+```
 
-- [https://www.linkedin.com/in/mrkylin/](https://www.linkedin.com/in/mrkylin/)
- 
-So that you can message me directly and get the latest information about OpenTGX.
+## ⚡ 快速开始 (Quick Start)
 
-## Examples/Products
+### 1. 服务端 (Go)
 
-Here are some examples and products based on OpenTGX, you can get them as references.
+只需几行代码，启动一个可扩展的竞技节点。
 
-- [Jare Adventure](https://store.cocos.com/app/en/detail/4241)
-- Billiards Girl-Coming soon
-- [Joystick - Tank Game 2D](https://github.com/qilinshuyuan/KylinsToolkit/tree/main/kfc/assets/module_demo_tank)
-- [Joystick - Rooster Jump Jump](https://github.com/qilinshuyuan/KylinsToolkit/tree/main/kfc/assets/module_demo_rooster)
-> If you have examples and products based on KylinsToolkit and want to be listed here, please contact me.
+```go
+package main
 
-## OpenTGX-Cocos-Client
+import (
+    "github.com/ArenaMatrix/ArenaMatrix/ArenaServer"
+    // 引入 KCP 网关支持
+    _ "github.com/ArenaMatrix/ArenaMatrix/ArenaServer/gate/kcp"
+)
 
-- `base`: Some basic components, such as resolution fit, resource loading queue, audio play, input management, etc.
-- `easy_camera`: Free camera, fps camera, third person camera, 2D following camera and so on.
-- `easy_controller`: Virtual joysitck, supports 2D and 3D projects, buttons, and camera controllers.
-- `easy_ui_framework`: A simple MVVM style UI framework, that supports UI layer management, resouces load, events auto management, etc.
+func main() {
+    // 1. 创建节点
+    node := arenaserver.NewNode()
+    
+    // 2. 注册您的战斗逻辑 (ECS System)
+    node.RegisterSystem(MyBattleSystem{})
 
-## Why Do You Need It?
+    // 3. 启动引擎
+    node.Run(":8888")
+}
+```
 
-After communicating with thousands of developers, I found many strong needs as below.
+### 2. 客户端 (Unity / C#)
 
-1. **Skill Improvement**: Learn more tricks and get more practical experience
-2. **Well-organized Project Templates**: Speed up project development.
-3. **High-Quality Framework**: Useful Solutions to solve plenty of basic requirements and problems.
+连接并驱动仿真逻辑。
 
-So I wrote and open-source the `OpenTGX` project.
+```csharp
+using ArenaMatrix.Unity;
 
-Most of the content is based on my 15y+ experience in game development. It's not perfect but can solve many problems to speed up your development progress and make your project management easier when working together with many team members.
+void Start() {
+    // 1. 连接服务器
+    AM.Connect("127.0.0.1", 8888);
+    
+    // 2. 监听帧同步 (自动预测)
+    AM.OnFrame += (frame) => {
+        // 您只需编写推进逻辑，ArenaMatrix 会自动处理回滚与和解
+        MyBattleSystem.Tick(frame);
+    };
+}
+```
 
-More and more components will be added in the future, such as networking, 2d games components, 3d games components, etc.
+## 👨‍💻 开源项目组
+>麒麟子@ArenaMatrix 架构师 & 主理人
+- **团队位置：** 负责 ArenaMatrix 架构设计与方案落地。
+- **相关经验:** 主导和参与了5款游戏引擎制作，曾任全球 Top 3 开源游戏引擎负责人。，主导并参与了 RTS、MOBA、MMO、FPS、休闲竞技类游戏项目的引擎、客户端、服务端开发。
+- **商业验证:** 开源房间式游戏框架作者，累计 500+ 付费客户，开源项目被数千家研发团队使用，ArenaMatrix 为这一系列经验的延续。
+- **主要目标**：让 ArenaMatrix 成为 AI 时代最好用的多人在线与实时互动应用开发引擎。
+- **自媒体号**：麒麟子MrKylin 全网垂类粉丝 15W+。
 
-From this, Mr Kylin(me) will work together with other developers based on `OpenTGX` to give you more projects, examples, and tutorials which we think can help you a lot.
+>晓衡@ArenaMatrix 资源中心运营负责人
+- **团队位置**：负责 ArenaMatrix 资源中心的传播推广与运营，帮助开发者进行变现。
+- **相关经验**：拥有近10年资源商店运营经验，累计销售额数千万
+- **主要目标**：帮助 1000 名开发者年入10万+。
+- **自媒体号**：晓衡的游戏开发圈  全网垂类粉丝 7W+。
 
-I hope more and more developers join us to make `OpenTGX` better.
+>玉兔@ArenaMatrix 媒体负责人
+- **团队位置：** 负责 ArenaMatrix 的推广与传播
+- **相关经验：** 5年+ 游戏引擎技术传播和自媒体经验，擅长产出高质量的技术教程视频，多条视频播放量 10w+。
+- **主要目标：** 让更多人使用 ArenaMatrix。
+- **自媒体号：** -不捣药的玉兔- 全网垂类粉丝 10W+。
+
+## 📦 行业解决方案 (Solutions)
+此开源项目不设计任何限制，任何房间类项目均可基于此开源项目进行开发。
+对于一些想要快速获得特定类型的项目模板，快速掌握核心用法的朋友，可参考以下信息：
+1、承接公司：成都阿瑞娜矩阵科技有限公司
+2、提供经过商业验证的 MVP 模板，助您快速立项（构建中...）。
+3、提供高品质的课程、培训以及学习社群，帮助您快速使用 ArenaMatrix 构建多人在线游戏和互动应用。（构建中...）

@@ -1,5 +1,5 @@
 # ArenaEngine
-
+## 面向 AI 时代的开源跨平台联机竞技引擎
 ## 📖 简介 (Introduction)
 
 **ArenaEngine** 是一款专为 **房间式多人在线游戏和实时互动应用** 设计的开源商业级全栈引擎。
